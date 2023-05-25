@@ -39,6 +39,9 @@ public class Calculator {
 
             boolean loop = true;
 
+            int openBracket = 0;
+            int closeBracket = 0;
+
             while (loop) {
                 System.out.println("Please input the equation you wish to calculate. Note that only the following symbols can be used:");
                 System.out.println("\n+");
@@ -55,8 +58,18 @@ public class Calculator {
 
                 String equationTrim = equation.replaceAll(" ", "");
 
-                
+                openBracket = equationTrim.indexOf("(");
+                closeBracket = equationTrim.indexOf(")");
 
+                if (openBracket != -1) {
+                    if (closeBracket != -1) {
+                        String bracket = equationTrim.substring(openBracket + 1, closeBracket);
+                        System.out.println(bracket);
+                        break;
+
+                    }
+                }
+                
                 System.out.println(equationTrim);
 
                 loop = false;
