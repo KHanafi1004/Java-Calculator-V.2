@@ -33,14 +33,47 @@ public class Calculator {
         return x % y;
     }
 
+    public static boolean checkBracket(String equation) {
+        int openBracket = equation.indexOf("(");
+        int endBracket = equation.indexOf(")");
+
+        if (openBracket != -1) {
+            if (endBracket != -1) {
+                return true;
+            } else {
+                System.out.println("Error: Bracket not closed");
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static int checkexponent(String equation) {
+        return equation.indexOf("^");
+    }
+
+    public static int getBase(String equation, int expIndex) {
+        String baseStr = "";
+        for (int i = expIndex - 1; i > 0; i--) {
+            if (equation.charAt(i) != '+' || equation.charAt(i) != '-' || equation.charAt(i) != '*' || equation.charAt(i) != '/' ||
+            equation.charAt(i) != '(') {
+                baseStr = equation.charAt(i) + baseStr;
+            } else {
+                break;
+            }
+        }
+
+        int baseInt = Integer.parseInt(baseStr);
+
+        return baseInt;
+    }
+
     public static void main(String[] args) {
 
         try (Scanner in = new Scanner(System.in)) {
 
             boolean loop = true;
-
-            int openBracket = 0;
-            int closeBracket = 0;
 
             while (loop) {
                 System.out.println("Please input the equation you wish to calculate. Note that only the following symbols can be used:");
@@ -58,19 +91,17 @@ public class Calculator {
 
                 String equationTrim = equation.replaceAll(" ", "");
 
-                openBracket = equationTrim.indexOf("(");
-                closeBracket = equationTrim.indexOf(")");
+                if (checkBracket(equationTrim)) {
+                    int openBracket = equationTrim.indexOf("(");
+                    int endBracket = equationTrim.indexOf(")");
+                    
+                    String bracket = equationTrim.substring(openBracket, endBracket);
 
-                if (openBracket != -1) {
-                    if (closeBracket != -1) {
-                        String bracket = equationTrim.substring(openBracket + 1, closeBracket);
-                        System.out.println(bracket);
-                        break;
-
+                    if (checkexponent(bracket) != -1) {
+                        System.out.println(getBase(bracket, bracket.indexOf("^")));
                     }
+
                 }
-                
-                System.out.println(equationTrim);
 
                 loop = false;
             }
